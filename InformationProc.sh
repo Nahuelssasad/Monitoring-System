@@ -9,7 +9,7 @@ echo "Id process:  $PROCESSID"
 
 
 #Information about program and VMA
-MAPS=$( grep "/$NAME"  ./registro.txt )
+MAPS=$( grep "/$NAME"$  ./registro.txt )
 
 echo "----------------------------"
 while IFS= read -r linea ;do
@@ -38,4 +38,24 @@ LIBRARIES=$( grep -F '.so.' ./registro.txt)
 while IFS= read -r linea;do
 	echo $linea
 done <<< $LIBRARIES
+
+
+echo -e  "---------------------------- \n"
+
+#Information about partitions
+
+PARTITIONS=$(grep 's[a-z]'   /proc/partitions)
+SIZE_SDA=$(grep 'sda$' /proc/partitions | awk '{print $3}' )
+SIZE_SDB=$(grep 'sdb$' /proc/partitions | awk '{print $3}')
+SIZE_SDA=$(awk "BEGIN {printf \"%.2f\",$SIZE_SDA/2^20 }")
+SIZE_SDB=$(awk "BEGIN {printf \"%.2f\",$SIZE_SDB/2^20}")
+
+echo "My partitions and  your size"
+echo "$SIZE_SDA GB"
+echo "$SIZE_SDB GB"
+
+
+
+
+
 
